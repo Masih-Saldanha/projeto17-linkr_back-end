@@ -1,7 +1,7 @@
 CREATE TABLE "users" (
 	"id" serial NOT NULL PRIMARY KEY,
 	"email" text NOT NULL UNIQUE,
-	"password" varchar(8) NOT NULL,
+	"password" TEXT NOT NULL,
 	"username" varchar(100) NOT NULL,
 	"pictureUrl" text NOT NULL
 );
