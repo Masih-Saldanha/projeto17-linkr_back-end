@@ -4,6 +4,9 @@ import jwt from 'jsonwebtoken';
 import db from '../db.js';
 import 'dotenv/config';
 
+import postRepository from '../repositories/postRepository.js';
+import likesRepository from '../repositories/likesRepository.js';
+
 export async function likePost(req, res) {
   const { authorization } = req.headers;
   const token = authorization?.replace('Bearer', '').trim();
@@ -15,11 +18,11 @@ export async function likePost(req, res) {
   try {
     const user = jwt.verify(token, process.env.JWT_SECRET);
 
-    const postSearch = await db.query('SELECT * FROM posts WHERE id = $1', [idPost]);
+    const postSearch = await postRepository.searchPostById(idPost);
 
     if (postSearch.rowCount === 0) return res.status(404).send('Post não encontrado');
 
-    await db.query('INSERT INTO likes ("userId", "postId") VALUES ($1, $2)', [user.id, idPost]);
+    await likesRepository.insertLike(user.id, idPost);
 
     res.status(201).send('Like adicionado!');
   } catch (e) {
@@ -39,11 +42,11 @@ export async function dislikePost(req, res) {
   try {
     const user = jwt.verify(token, process.env.JWT_SECRET);
 
-    const postSearch = await db.query('SELECT * FROM posts WHERE id = $1', [idPost]);
+    const postSearch = await postRepository.searchPostById(idPost);
 
     if (postSearch.rowCount === 0) return res.status(404).send('Post não encontrado');
 
-    await db.query('DELETE FROM likes WHERE "userId" = $1 AND "postId" = $2', [user.id, idPost]);
+    await likesRepository.deleteLike(user.id, idPost);
 
     res.status(200).send('Like deletado!');
   } catch (e) {

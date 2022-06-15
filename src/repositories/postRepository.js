@@ -7,8 +7,13 @@ async function createPost(description, link, userId) {
     `, [description, link, userId]);
 }
 
+async function searchPostById(id) {
+    return db.query('SELECT * FROM posts WHERE id = $1', [id]);
+}
+
 const postRepository = {
-    createPost
+    createPost,
+    searchPostById
 }
 
 export default postRepository;
