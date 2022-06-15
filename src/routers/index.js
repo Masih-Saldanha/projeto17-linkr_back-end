@@ -3,10 +3,11 @@ import { Router } from 'express';
 
 import likesRouter from './likesRouter.js';
 
-const index = Router();
+import postRouter from "./postRouter.js";
 
-index.use(likesRouter);
+const router = Router();
 
-// index.use(ROUTER_AUTENTICAÇÃO);
+router.use(postRouter);
+router.use(likesRouter);
 
-export default index;
+export default router;
