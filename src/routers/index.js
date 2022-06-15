@@ -1,6 +1,7 @@
-import { Router } from "express";
+/* eslint-disable import/extensions */
+import { Router } from 'express';
 
-import likesRouter from "./likesRouter.js";
+import likesRouter from './likesRouter.js';
 
 const index = Router();
 
