@@ -1,7 +1,9 @@
 import { Router } from "express";
 
-const index = Router();
+import postRouter from "./postRouter.js";
 
-// index.use(ROUTER_AUTENTICAÇÃO);
+const router = Router();
 
-export default index;
+router.use(postRouter);
+
+export default router;
