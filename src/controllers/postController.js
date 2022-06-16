@@ -16,10 +16,12 @@ export async function publishPost(req, res) {
     }
 }
 
+// FIXME: FALTA UMA QUERY PARA BUSCAR LIKES EM CADA POST
 export async function getPosts(req, res) {
     try {
-        
-        res.sendStatus(201);
+        // FIXME: PODE-SE TENTAR LÓGICA DE PAGINAÇÃO AQUI DEPOIS.
+        const { rows: postsList } = await postRepository.getPostsList(0);
+        res.status(200).send(postsList);
     } catch (error) {
         console.log(error);
         res.status(500).send(error);

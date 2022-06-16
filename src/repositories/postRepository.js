@@ -7,8 +7,24 @@ async function createPost(description, link, userId) {
     `, [description, link, userId]);
 }
 
+async function getPostsList(page) {
+    return db.query(`
+        SELECT
+            users.username,
+            users."pictureUrl",
+            posts.description,
+            posts.link
+        FROM posts
+        JOIN users ON posts."userId" = users.id
+        ORDER BY posts.id DESC
+        LIMIT 20
+        OFFSET $1;
+    `, [page]);
+}
+
 const postRepository = {
-    createPost
+    createPost,
+    getPostsList
 }
 
 export default postRepository;
