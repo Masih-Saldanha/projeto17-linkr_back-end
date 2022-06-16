@@ -1,3 +1,4 @@
+/* eslint-disable import/prefer-default-export */
 import jwt from 'jsonwebtoken';
 import 'dotenv/config';
 import usersRepository from '../repositories/usersRepository.js';

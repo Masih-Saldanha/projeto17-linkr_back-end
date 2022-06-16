@@ -7,16 +7,10 @@ import postRepository from '../repositories/postRepository.js';
 import likesRepository from '../repositories/likesRepository.js';
 
 export async function likePost(req, res) {
-  const { authorization } = req.headers;
-  const token = authorization?.replace('Bearer', '').trim();
-
-  if (!token) return res.status(401).send('Esta rota precisa do token de acesso');
-
   const { idPost } = req.params;
+  const { user } = res.locals;
 
   try {
-    const user = jwt.verify(token, process.env.JWT_SECRET);
-
     const postSearch = await postRepository.searchPostById(idPost);
 
     if (postSearch.rowCount === 0) return res.status(404).send('Post não encontrado');
@@ -31,16 +25,10 @@ export async function likePost(req, res) {
 }
 
 export async function dislikePost(req, res) {
-  const { authorization } = req.headers;
-  const token = authorization?.replace('Bearer', '').trim();
-
-  if (!token) return res.status(401).send('Esta rota precisa do token de acesso');
-
   const { idPost } = req.params;
+  const { user } = res.locals;
 
   try {
-    const user = jwt.verify(token, process.env.JWT_SECRET);
-
     const postSearch = await postRepository.searchPostById(idPost);
 
     if (postSearch.rowCount === 0) return res.status(404).send('Post não encontrado');

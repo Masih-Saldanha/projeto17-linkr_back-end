@@ -1,3 +1,4 @@
+/* eslint-disable import/prefer-default-export */
 export function validateSchema(schema) {
   return (req, res, next) => {
     const schemaValidation = schema.validate(req.body, { abortEarly: false });
