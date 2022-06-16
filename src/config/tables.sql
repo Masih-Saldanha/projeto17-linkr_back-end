@@ -1,11 +1,7 @@
 CREATE TABLE "users" (
 	"id" serial NOT NULL PRIMARY KEY,
 	"email" text NOT NULL UNIQUE,
-<<<<<<< HEAD:tables.sql
-	"password" TEXT NOT NULL,
-=======
 	"password" text NOT NULL,
->>>>>>> main:src/config/tables.sql
 	"username" varchar(100) NOT NULL,
 	"pictureUrl" text NOT NULL
 );
