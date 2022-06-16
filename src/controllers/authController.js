@@ -35,7 +35,7 @@ export async function signin(req, res) {
 
 
     if(!(await bcrypt.compare(password, findEmailUsername.rows[0].password))) {
-        return res.status(401).json({ error: 'Senha incorreta' })
+        return res.status(401).json({ error: 'Senha incorreta!' })
     }
 
     const data = {
