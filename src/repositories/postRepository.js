@@ -7,6 +7,18 @@ async function createPost(description, link, userId) {
     `, [description, link, userId]);
 }
 
+async function getPostsByUserId(userId) {
+  // TODO: testar a query com dados no banco
+  // TODO: adicionar com os hashtags
+  return db.query(`
+    SELECT p.*, COUNT(l.*) as "postLikes" 
+    FROM posts p
+    JOIN likes l ON l."userId" = p."userId"
+    WHERE p."userId" = $1 
+    GROUP BY p.id, "postLikes"
+    `, [userId]);
+}
+
 async function searchPostById(id) {
   return db.query('SELECT * FROM posts WHERE id = $1', [id]);
 }
@@ -38,6 +50,7 @@ const postRepository = {
   createPost,
   searchPostById,
   getPostsList,
+  getPostsByUserId,
 };
 
 export default postRepository;

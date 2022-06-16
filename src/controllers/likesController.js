@@ -31,7 +31,7 @@ export async function likePost(req, res) {
 }
 
 export async function dislikePost(req, res) {
-    const { authorization } = req.headers;
+  const { authorization } = req.headers;
   const token = authorization?.replace('Bearer', '').trim();
 
   if (!token) return res.status(401).send('Esta rota precisa do token de acesso');
