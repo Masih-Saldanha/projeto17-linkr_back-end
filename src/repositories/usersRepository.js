@@ -1,5 +1,13 @@
 import db from "./../config/db.js";
 
+async function getUserInfoById(userId) {
+  return db.query(`
+    SELECT u.email, u.username, u."pictureUrl" 
+    FROM users u
+    WHERE u.id = $1
+    `, [userId]);
+}
+
 async function checkSignUp(email, username) {
   return db.query("SELECT * FROM users WHERE email = $1 OR username = $2", [
     email,
@@ -14,9 +22,10 @@ async function insertUser(username, email, passwordHash, picture) {
   );
 }
 
-const userRepository = {
+const usersRepository = {
+  getUserInfoById,
   checkSignUp,
-  insertUser,
+  insertUser
 };
 
-export default userRepository;
+export default usersRepository;
