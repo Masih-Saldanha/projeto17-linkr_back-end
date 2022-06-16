@@ -8,7 +8,6 @@ async function createPost(description, link, userId) {
 }
 
 async function getPostsByUserId(userId) {
-  // TODO: testar a query com dados no banco
   // TODO: adicionar com os hashtags?
   return db.query(`
   SELECT p.id as "postId", p.description, p.link as url, COUNT(l.*) as "postLikes" 

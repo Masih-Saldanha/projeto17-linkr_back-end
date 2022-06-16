@@ -9,7 +9,7 @@ export async function validaHeader(req, res, next) {
     const token = authorization?.replace('Bearer', '').trim();
     if (!token) return res.status(401).send('Esta rota precisa do token de acesso');
 
-    const user = jwt.verify(token, process.env.JWT_SECRET);
+    const user = jwt.verify(token, process.env.JWT_TOKEN);
 
     res.locals.user = user;
 
