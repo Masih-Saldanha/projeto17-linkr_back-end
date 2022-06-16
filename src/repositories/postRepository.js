@@ -45,11 +45,36 @@ async function getPostsList(page) {
     `, [page]);
 }
 
+async function getPostsByHashtag(hashtag) {
+  return db.query(`
+    SELECT 
+      P.id AS "postId", 
+      P.description, 
+      P.link, P."userId", 
+      U.username, 
+      U."pictureUrl", 
+      count(L.id) AS "likesPost"
+    FROM posts P 
+    INNER JOIN users U ON P."userId" = U.id
+    LEFT JOIN likes L ON P.id = L."postId" AND U.id = L."userId" 
+    WHERE P.id IN (SELECT "postId" FROM hashtags WHERE hashtag = $1)
+    GROUP BY 
+      P.id, 
+      P.description, 
+      P.link, 
+      P."userId", 
+      U.username, 
+      U."pictureUrl"
+    ORDER BY P.id DESC
+  `, [hashtag]);
+}
+
 const postRepository = {
   createPost,
   searchPostById,
   getPostsList,
   getPostsByUserId,
+  getPostsByHashtag,
 };
 
 export default postRepository;

@@ -7,6 +7,6 @@ import { validaHeader } from '../middlewares/authMiddleware.js';
 const hashtagsRouter = Router();
 
 hashtagsRouter.get('/hashtag/trending', validaHeader, getTrendingHashtags);
-hashtagsRouter.get('/hashtag/:hashtag', validaHeader, getHashtagsByHashtag);
+hashtagsRouter.get('/hashtag/:hashtag', getHashtagsByHashtag);
 
 export default hashtagsRouter;
