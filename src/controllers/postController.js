@@ -16,7 +16,6 @@ export async function publishPost(req, res) {
     }
 }
 
-// FIXME: FALTA UMA QUERY PARA BUSCAR LIKES EM CADA POST
 export async function getPosts(req, res) {
     try {
         // FIXME: PODE-SE TENTAR LÓGICA DE PAGINAÇÃO AQUI DEPOIS.
