@@ -1,7 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 /* eslint-disable linebreak-style */
 import jwt from 'jsonwebtoken';
-import db from '../db.js';
 import 'dotenv/config';
 
 import postRepository from '../repositories/postRepository.js';
