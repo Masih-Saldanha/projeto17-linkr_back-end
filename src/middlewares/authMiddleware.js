@@ -3,13 +3,11 @@
 import jwt from 'jsonwebtoken';
 import 'dotenv/config';
 
-
 export async function validaHeader(req, res, next) {
   try {
     const { authorization } = req.headers;
     const token = authorization?.replace('Bearer', '').trim();
     if (!token) return res.status(401).send('Esta rota precisa do token de acesso');
-    next();
 
     const user = jwt.verify(token, process.env.JWT_SECRET);
 
