@@ -9,13 +9,13 @@ async function createPost(description, link, userId) {
 
 async function getPostsByUserId(userId) {
   // TODO: testar a query com dados no banco
-  // TODO: adicionar com os hashtags
+  // TODO: adicionar com os hashtags?
   return db.query(`
-    SELECT p.*, COUNT(l.*) as "postLikes" 
-    FROM posts p
-    JOIN likes l ON l."userId" = p."userId"
-    WHERE p."userId" = $1 
-    GROUP BY p.id, "postLikes"
+  SELECT p.id as "postId", p.description, p.link as url, COUNT(l.*) as "postLikes" 
+  FROM posts p
+  LEFT JOIN likes l ON l."postId" = p.id
+  WHERE p."userId" = $1
+  GROUP BY p.id
     `, [userId]);
 }
 
