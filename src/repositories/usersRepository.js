@@ -1,7 +1,7 @@
-import db from "../config/db.js";
+import db from '../config/db.js';
 
 async function getUserInfoById(userId) {
-    return db.query(`
+  return db.query(`
     SELECT u.email, u.username, u."pictureUrl" 
     FROM users u
     WHERE u.id = $1
@@ -9,7 +9,7 @@ async function getUserInfoById(userId) {
 }
 
 const usersRepository = {
-    getUserInfoById
-}
+  getUserInfoById,
+};
 
 export default usersRepository;

@@ -1,12 +1,14 @@
-import { Router } from "express";
+/* eslint-disable import/extensions */
+import { Router } from 'express';
 
-import postRouter from "./postRouter.js";
-
+import likesRouter from './likesRouter.js';
+import postRouter from './postRouter.js';
 import usersRouter from './usersRouter.js';
 
 const router = Router();
 
 router.use(postRouter);
 router.use(usersRouter);
+router.use(likesRouter);
 
 export default router;

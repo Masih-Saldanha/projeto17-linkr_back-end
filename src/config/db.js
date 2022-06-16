@@ -1,5 +1,5 @@
-import pg from "pg";
-import dotenv from "dotenv";
+import pg from 'pg';
+import dotenv from 'dotenv';
 
 dotenv.config();
 
@@ -24,10 +24,10 @@ const { Pool } = pg;
 // MODO ALTERNATIVO ABAIXO SE DER RUIM PRA ALGUEM:
 
 const db = new Pool({
-    connectionString: process.env.DATABASE_URL,
-    ssl: {
-        rejectUnauthorized: false
-    }
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false,
+  },
 });
 
 export default db;
