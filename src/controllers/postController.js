@@ -16,10 +16,10 @@ export async function publishPost(req, res) {
 }
 
 export async function getPosts(req, res) {
+  const formatedPostsList = res.locals.formatedPostsList;
   try {
     // FIXME: PODE-SE TENTAR LÓGICA DE PAGINAÇÃO AQUI DEPOIS.
-    const { rows: postsList } = await postRepository.getPostsList(0);
-    res.status(200).send(postsList);
+    res.status(200).send(formatedPostsList);
   } catch (error) {
     console.log(error);
     res.status(500).send(error);
