@@ -17,39 +17,38 @@ export async function signup(req, res) {
       picture
     );
     res.sendStatus(201);
-    } catch (error) {
-        console.log(error);
-        res.sendStatus(500);
-    }
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(500);
+  }
 }
 
 export async function signin(req, res) {
-    const { email, password } = req.body
-    try {
+  const { email, password } = req.body
+  try {
 
     const findEmailUsername = await usersRepository.checkSignUp(email, email)
 
     if (!findEmailUsername.rowCount) {
-        return res.status(401).json({ error: 'Email não cadastrado!' })
+      return res.status(401).json({ error: 'Email não cadastrado!' })
     }
 
-
-    if(!(await bcrypt.compare(password, findEmailUsername.rows[0].password))) {
-        return res.status(401).json({ error: 'Senha incorreta!' })
+    if (!(await bcrypt.compare(password, findEmailUsername.rows[0].password))) {
+      return res.status(401).json({ error: 'Senha incorreta!' })
     }
 
     const data = {
-        id: findEmailUsername.rows[0].id,
-        username: findEmailUsername.rows[0].username,
-        picture: findEmailUsername.rows[0].picture
+      id: findEmailUsername.rows[0].id,
+      username: findEmailUsername.rows[0].username,
+      picture: findEmailUsername.rows[0].picture
     }
 
     const token = jwt.sign(data, process.env.JWT_TOKEN)
 
     res.status(200).json(token)
 
-    } catch (error) {
+  } catch (error) {
     console.log(error);
     res.sendStatus(500)
-    }
+  }
 }
