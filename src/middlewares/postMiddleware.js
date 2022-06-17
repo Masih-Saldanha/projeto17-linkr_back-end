@@ -9,7 +9,7 @@ export async function urlMetadataFormater(req, res, next) {
         for (let post of postsList) {
             const link = post.link;
             const metadata = await urlMetadata(link);
-            const newObject = { linkTitle: metadata.title, linkDescription: metadata.description, linkImage: metadata.image };
+            const newObject = { linkUrl: link, linkTitle: metadata.title, linkDescription: metadata.description, linkImage: metadata.image };
             post = { ...post, link: newObject };
             formatedPostsList.push(post);
         }
