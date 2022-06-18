@@ -26,9 +26,11 @@ async function getPostsList(page) {
   return db.query(`
         SELECT
             users.username,
+            users."userId",
             users."pictureUrl" as "userPicture",
             posts.description,
             posts.link,
+            posts.id as "postId",
             COUNT(likes."postId") as likes
         FROM posts
         JOIN users ON posts."userId" = users.id

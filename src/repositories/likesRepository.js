@@ -8,9 +8,14 @@ async function deleteLike(userId, postId) {
   return db.query('DELETE FROM likes WHERE "userId" = $1 AND "postId" = $2', [userId, postId]);
 }
 
-const postRepository = {
+async function checkIfPostIsLiked(userId, postId) {
+    return db.query('SELECT id FROM likes WHERE "userId" = $1 AND "postId" = $2', [userId, postId]);
+}
+
+const likesRepository = {
   insertLike,
   deleteLike,
+  checkIfPostIsLiked
 };
 
-export default postRepository;
+export default likesRepository;
