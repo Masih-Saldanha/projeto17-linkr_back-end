@@ -4,17 +4,24 @@ import 'dotenv/config';
 import usersRepository from '../repositories/usersRepository.js';
 import postRepository from '../repositories/likesRepository.js';
 
-
 export async function getUserInfos(req, res) {
   const { id } = req.params;
-  const {user, formatedPostsList} = req.locals;
+  const { user, formatedPostsList } = req.locals;
 
   try {
     const userSearch = await usersRepository.getUserInfoById(id);
 
     if (userSearch.rowCount === 0) return res.status(404).send('Usuário inexistente');
 
-    const objToSend = { ...userSearch.rows[0], posts: formatedPostsList};
+    // TODO: buscar as hashtags correspondentes na query também
+
+    const userPosts = await postRepository.getPostsByUserId(id);
+
+    const objToSend = {
+      ...userSearch.rows[0],
+      posts: userPosts.rows,
+      links: formatedPostsList,
+    };
 
     res.status(200).send(objToSend);
   } catch (e) {

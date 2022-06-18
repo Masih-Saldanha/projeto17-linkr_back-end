@@ -10,7 +10,7 @@ async function createPost(description, link, userId) {
 async function getPostsByUserId(userId) {
   // TODO: adicionar com os hashtags?
   return db.query(`
-  SELECT p.id as "postId", p.description, p.link as url, COUNT(l.*) as "postLikes" 
+  SELECT p.id as "postId", p.description, COUNT(l.*) as "postLikes" 
   FROM posts p
   LEFT JOIN likes l ON l."postId" = p.id
   WHERE p."userId" = $1
