@@ -2,6 +2,18 @@ import urlMetadata from "url-metadata";
 
 import postRepository from "../repositories/postRepository.js";
 
+export async function validateUrlMetadata(req, res, next) {
+    try {
+        const metadata = await urlMetadata(req.body.link);
+        console.log(metadata);
+
+        next();
+    } catch (error) {
+        console.log(error);
+        res.status(400).send("Esse link não é aceito, envie um link válido");
+    }
+}
+
 export async function urlMetadataFormater(req, res, next) {
     try {
         const { rows: postsList } = await postRepository.getPostsList(0);
