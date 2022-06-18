@@ -4,26 +4,17 @@ import 'dotenv/config';
 import usersRepository from '../repositories/usersRepository.js';
 import postRepository from '../repositories/likesRepository.js';
 
+
 export async function getUserInfos(req, res) {
-  const { authorization } = req.headers;
-  const token = authorization?.replace('Bearer', '').trim();
-
-  if (!token) return res.status(401).send('Esta rota precisa de um token de acesso');
-
   const { id } = req.params;
+  const {user, formatedPostsList} = req.locals;
 
   try {
-    const user = jwt.verify(token, process.env.JWT_SECRET);
-
     const userSearch = await usersRepository.getUserInfoById(id);
 
     if (userSearch.rowCount === 0) return res.status(404).send('Usuário inexistente');
 
-    // TODO: buscar as hashtags correspondentes na query também
-
-    const userPosts = await postRepository.getPostsByUserId(id);
-
-    const objToSend = { ...userSearch.rows[0], posts: userPosts.rows };
+    const objToSend = { ...userSearch.rows[0], posts: formatedPostsList};
 
     res.status(200).send(objToSend);
   } catch (e) {
