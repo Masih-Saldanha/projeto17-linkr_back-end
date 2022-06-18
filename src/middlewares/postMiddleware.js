@@ -32,7 +32,7 @@ export async function urlMetadataFormater(req, res, next) {
         linkUrl: link,
         linkTitle: metadata.title,
         linkDescription: metadata.description,
-        linkImage: metadata.image,
+        linkImage: metadata.image
       };
       post = { ...post, link: newObject };
       formatedPostsList.push(post);
