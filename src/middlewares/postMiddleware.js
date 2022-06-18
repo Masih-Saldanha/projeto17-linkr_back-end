@@ -5,7 +5,7 @@ import postRepository from "../repositories/postRepository.js";
 export async function validateUrlMetadata(req, res, next) {
     try {
         const metadata = await urlMetadata(req.body.link);
-        // console.log(metadata);
+        console.log(metadata);
 
         next();
     } catch (error) {
