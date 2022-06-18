@@ -13,14 +13,9 @@ export async function getUserInfos(req, res) {
 
     if (userSearch.rowCount === 0) return res.status(404).send('Usuário inexistente');
 
-    // TODO: buscar as hashtags correspondentes na query também
-
-    const userPosts = await postRepository.getPostsByUserId(id);
-
     const objToSend = {
       ...userSearch.rows[0],
-      posts: userPosts.rows,
-      links: formatedPostsList,
+      posts: formatedPostsList,
     };
 
     res.status(200).send(objToSend);
