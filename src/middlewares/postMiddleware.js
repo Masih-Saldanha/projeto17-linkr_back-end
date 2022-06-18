@@ -17,12 +17,11 @@ export async function validateUrlMetadata(req, res, next) {
 }
 
 export async function urlMetadataFormater(req, res, next) {
-  const { id } = req.params;
-  const { user } = req.locals;
-  try {
-    const { rows: postsList } = await id ? postRepository.getPostsByUserId(id)
-      : postRepository.getPostsList(0);
 
+  const { user } = req.locals;
+  const { id } = req.params;
+    try {
+        const { rows: postsList } = id ? await postRepository.getPostsByUserId(id) : await postRepository.getPostsList(0);
     const formatedPostsList = [];
     for (let post of postsList) {
       const { link } = post;
