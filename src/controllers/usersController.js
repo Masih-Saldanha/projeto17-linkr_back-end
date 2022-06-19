@@ -31,7 +31,7 @@ export async function getUserPicture(req, res) {
     const { rows: userPicture } = await usersRepository.getUserPictureByUserId(id);
     res.status(200).send(userPicture[0]);
   } catch (error) {
-    console.log('Erro ao buscar os dados do usuário', e);
-    res.status(500).send(e);
+    console.log('Erro ao buscar os dados do usuário', error);
+    res.status(500).send(error);
   }
 }
