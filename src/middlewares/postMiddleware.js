@@ -18,7 +18,7 @@ export async function validateUrlMetadata(req, res, next) {
 
 export async function urlMetadataFormater(req, res, next) {
 
-  const { user } = req.locals;
+  const { user } = res.locals;
   const { id } = req.params;
     try {
         const { rows: postsList } = id ? await postRepository.getPostsByUserId(id) : await postRepository.getPostsList(0);
