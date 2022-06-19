@@ -13,6 +13,11 @@ async function getTrendingHashtags() {
     `);
 }
 
+async function addHashtag(hashtag, postId) {
+  return db.query(`
+        INSERT INTO hashtags (hashtag, "postId") VALUES ($1,$2)`, [hashtag, postId]);
+}
+
 async function getHashtagsByHashtag(hashtag) {
   return db.query(`
     SELECT *  FROM hashtags 
@@ -24,6 +29,7 @@ async function getHashtagsByHashtag(hashtag) {
 const hashtagsRepository = {
   getTrendingHashtags,
   getHashtagsByHashtag,
+  addHashtag,
 };
 
 export default hashtagsRepository;
