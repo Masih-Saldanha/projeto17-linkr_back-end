@@ -1,3 +1,6 @@
+/* eslint-disable no-plusplus */
+/* eslint-disable space-before-blocks */
+/* eslint-disable no-restricted-syntax */
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-return-assign */
 /* eslint-disable arrow-body-style */
