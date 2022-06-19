@@ -22,10 +22,19 @@ async function insertUser(username, email, passwordHash, picture) {
   );
 }
 
+async function getUserPictureByUserId(userId) {
+  return db.query(`
+    SELECT u."pictureUrl" 
+    FROM users u
+    WHERE u.id = $1
+    `, [userId]);
+}
+
 const usersRepository = {
   getUserInfoById,
   checkSignUp,
-  insertUser
+  insertUser,
+  getUserPictureByUserId
 };
 
 export default usersRepository;

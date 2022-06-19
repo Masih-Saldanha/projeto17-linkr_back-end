@@ -24,3 +24,14 @@ export async function getUserInfos(req, res) {
     res.status(500).send(e);
   }
 }
+
+export async function getUserPicture(req, res) {
+  const { id } = res.locals.user;
+  try {
+    const { rows: userPicture } = await usersRepository.getUserPictureByUserId(id);
+    res.status(200).send(userPicture[0]);
+  } catch (error) {
+    console.log('Erro ao buscar os dados do usuário', e);
+    res.status(500).send(e);
+  }
+}
