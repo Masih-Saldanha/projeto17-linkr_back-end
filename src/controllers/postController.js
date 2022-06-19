@@ -15,6 +15,44 @@ export async function publishPost(req, res) {
   }
 }
 
+export async function editPost(req, res) {
+  const postId = req.params.postId;
+  const postIdToInteger = parseInt(postId);
+  // console.log(postIdToInteger);
+
+  // console.log(req.body.description);
+
+  const user = res.locals.user;
+  // console.log(user);
+  try {
+    const dados = await postRepository.editPostByPostId(req.body.description, postIdToInteger, user.id);
+
+    res.sendStatus(200);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error);
+  }
+}
+
+export async function deletePost(req, res) {
+  const postId = req.params.postId;
+  const postIdToInteger = parseInt(postId);
+  // console.log(postIdToInteger);
+
+  // console.log(req.body.description);
+
+  const user = res.locals.user;
+  // console.log(user);
+  try {
+    const dados = await postRepository.deletePostById(postIdToInteger, user.id);
+
+    res.sendStatus(200);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error);
+  }
+}
+
 export async function getPosts(req, res) {
   const formatedPostsList = res.locals.formatedPostsList;
   try {

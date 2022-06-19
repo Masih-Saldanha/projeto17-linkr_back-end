@@ -72,12 +72,38 @@ async function getPostsByHashtag(hashtag) {
   `, [hashtag]);
 }
 
+async function editPostByPostId(description, postId, userId) {
+  return db.query(`
+    UPDATE posts
+    SET description = $1
+    WHERE id = $2 AND "userId" = $3;
+  `, [description, postId, userId]);
+}
+
+async function searchPostId(postId, userId) {
+  return db.query(`
+    SELECT * 
+    FROM posts
+    WHERE id = $1 AND "userId" = $2;
+  `, [postId, userId]);
+}
+
+async function deletePostById(postId, userId) {
+  return db.query(`
+    DELETE FROM posts
+    WHERE id = $1 AND "userId" = $2;
+  `, [postId, userId]);
+}
+
 const postRepository = {
   createPost,
   searchPostById,
   getPostsList,
   getPostsByUserId,
   getPostsByHashtag,
+  editPostByPostId,
+  searchPostId,
+  deletePostById
 };
 
 export default postRepository;
