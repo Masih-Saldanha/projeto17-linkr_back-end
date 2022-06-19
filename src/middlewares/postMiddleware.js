@@ -17,26 +17,26 @@ export async function validateUrlMetadata(req, res, next) {
 }
 
 export async function urlMetadataFormater(req, res, next) {
-
-  const { user } = req.locals;
+  const { user } = res.locals;
   const { id } = req.params;
-    try {
-        const { rows: postsList } = id ? await postRepository.getPostsByUserId(id) : await postRepository.getPostsList(0);
+  try {
+    const { rows: postsList } = id ? await postRepository.getPostsByUserId(id) : await postRepository.getPostsList(0);
     const formatedPostsList = [];
     for (let post of postsList) {
       const { link } = post;
       const metadata = await urlMetadata(link);
       const checkLike = await likesRepository.checkIfPostIsLiked(user.id, post.postId);
       const newObject = {
-        likedByUser: (checkLike.rowCount > 0) ? true : false,
+        likedByUser: (checkLike.rowCount > 0),
         linkUrl: link,
         linkTitle: metadata.title,
         linkDescription: metadata.description,
-        linkImage: metadata.image
+        linkImage: metadata.image,
       };
       post = { ...post, link: newObject };
       formatedPostsList.push(post);
     }
+
     res.locals.formatedPostsList = formatedPostsList;
 
     next();

@@ -10,6 +10,6 @@ const postRouter = Router();
 
 // FIXME: Precisa de middleware de autenticação:
 postRouter.post('/posts', [validaHeader, validateSchema(postSchema), validateUrlMetadata], publishPost);
-postRouter.get('/posts', validaHeader, urlMetadataFormater, getPosts);
+postRouter.get('/posts', [validaHeader, urlMetadataFormater], getPosts);
 
 export default postRouter;
