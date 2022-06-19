@@ -45,3 +45,22 @@ export async function urlMetadataFormater(req, res, next) {
     res.status(500).send(error);
   }
 }
+
+export async function validateEditPost(req, res, next) {
+  const postId = req.params.postId;
+  const postIdToInteger = parseInt(postId);
+  const user = res.locals.user;
+  try {
+    const post = await postRepository.searchPostId(postIdToInteger, user.id);
+    const postObject = post.rows[0];
+    // console.log(postObject);
+    if (post.rowCount === 0) {
+      return res.status(404).send(`Post not found, it doesn't exist or user is not the post creator.`)
+    }
+
+    next();
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error);
+  }
+}

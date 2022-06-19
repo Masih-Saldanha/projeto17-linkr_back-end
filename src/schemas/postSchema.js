@@ -5,4 +5,8 @@ const postSchema = joi.object({
   link: joi.string().uri().required(),
 });
 
-export default postSchema;
+const editPostSchema = joi.object({
+  description: joi.string().max(140)
+});
+
+export default {postSchema, editPostSchema};
