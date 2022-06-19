@@ -37,6 +37,7 @@ async function getPostsList(page) {
         LEFT JOIN likes ON posts.id = likes."postId"
         GROUP BY 
             users.username,
+            users.id,
             users."pictureUrl",
             users.id,
             posts.description,
