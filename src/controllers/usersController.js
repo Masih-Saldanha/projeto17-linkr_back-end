@@ -6,7 +6,7 @@ import postRepository from '../repositories/likesRepository.js';
 
 export async function getUserInfos(req, res) {
   const { id } = req.params;
-  const { user, formatedPostsList } = req.locals;
+  const { user, formatedPostsList } = res.locals;
 
   try {
     const userSearch = await usersRepository.getUserInfoById(id);
@@ -20,7 +20,7 @@ export async function getUserInfos(req, res) {
 
     res.status(200).send(objToSend);
   } catch (e) {
-    res.status(500).send(e);
     console.log('Erro ao buscar os dados do usuário', e);
+    res.status(500).send(e);
   }
 }

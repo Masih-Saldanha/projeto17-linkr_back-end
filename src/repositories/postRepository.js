@@ -39,6 +39,7 @@ async function getPostsList(page) {
             users.username,
             users.id,
             users."pictureUrl",
+            users.id,
             posts.description,
             posts.link,
             posts.id

@@ -12,6 +12,6 @@ const postRouter = Router();
 postRouter.post('/posts', [validaHeader, validateSchema(postSchema.postSchema), validateUrlMetadata], publishPost);
 postRouter.put('/posts/:postId', validaHeader, validateSchema(postSchema.editPostSchema), validateEditPost, editPost);
 postRouter.delete('/posts/:postId', validaHeader, validateEditPost, deletePost);
-postRouter.get('/posts', validaHeader, urlMetadataFormater, getPosts);
+postRouter.get('/posts', [validaHeader, urlMetadataFormater], getPosts);
 
 export default postRouter;
