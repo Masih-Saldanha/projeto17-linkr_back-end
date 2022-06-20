@@ -23,6 +23,25 @@ export async function likePost(req, res) {
   }
 }
 
+export async function getUsersWhoLiked(req, res) {
+  const { idPost } = req.params;
+  const { user } = res.locals;
+
+  try {
+    const likeSearch = await likesRepository.getUsers(idPost);
+
+    const checkIfUserLiked = likeSearch.rows.find((like) => like.userId === user.id);
+
+    res.status(200).send({
+      likes: likeSearch.rows,
+      userLiked: checkIfUserLiked,
+    });
+  } catch (e) {
+    res.status(500).send(e);
+    console.log('Erro ao buscar likes no banco de dados', e);
+  }
+}
+
 export async function dislikePost(req, res) {
   const { idPost } = req.params;
   const { user } = res.locals;
