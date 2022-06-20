@@ -35,3 +35,17 @@ export async function getUserPicture(req, res) {
     res.status(500).send(error);
   }
 }
+
+export async function getUsersByQuery(req, res) {
+  const { user } = res.locals;
+  const { query } = req.params;
+
+  try {
+    const search = await usersRepository.getUsersByQuery(query);
+
+    res.status(200).send(search.rows);
+  } catch (e) {
+    console.log('Erro ao buscar a query do usuário', e);
+    res.status(500).send(e);
+  }
+}
