@@ -17,7 +17,7 @@ async function checkSignUp(email, username) {
 
 async function getUsersByQuery(query) {
   return db.query(`
-    SELECT us.username
+    SELECT us.username, us.id
     FROM users us
     WHERE us.username
     ILIKE $1
