@@ -97,6 +97,20 @@ async function deletePostById(postId, userId) {
   `, [postId, userId]);
 }
 
+async function deleteLikesByPostId(postId) {
+  return db.query(`
+    DELETE FROM likes
+    WHERE "postId" = $1;
+  `, [postId]);
+}
+
+async function deleteHashtagsByPostId(postId) {
+  return db.query(`
+    DELETE FROM hashtags
+    WHERE "postId" = $1;
+  `, [postId]);
+}
+
 const postRepository = {
   createPost,
   searchPostById,
@@ -105,7 +119,9 @@ const postRepository = {
   getPostsByHashtag,
   editPostByPostId,
   searchPostId,
-  deletePostById
+  deletePostById,
+  deleteLikesByPostId,
+  deleteHashtagsByPostId
 };
 
 export default postRepository;

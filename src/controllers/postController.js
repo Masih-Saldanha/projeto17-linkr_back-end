@@ -57,7 +57,9 @@ export async function deletePost(req, res) {
   const user = res.locals.user;
   // console.log(user);
   try {
-    const dados = await postRepository.deletePostById(postIdToInteger, user.id);
+    await postRepository.deleteLikesByPostId(postIdToInteger);
+    await postRepository.deleteHashtagsByPostId(postIdToInteger);
+    await postRepository.deletePostById(postIdToInteger, user.id);
 
     res.sendStatus(200);
   } catch (error) {
