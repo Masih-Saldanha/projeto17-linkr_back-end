@@ -15,6 +15,7 @@ async function getPostsByUserId(userId) {
   LEFT JOIN likes l ON l."postId" = p.id
   WHERE p."userId" = $1
   GROUP BY p.id
+  LIMIT 20
     `, [userId]);
 }
 
