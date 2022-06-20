@@ -15,10 +15,12 @@ export async function publishPost(req, res) {
   try {
     const newPost = await postRepository.createPost(description, link, userId);
     const postId = newPost.rows[0].id;
-    const hashtags = convertHashtags(description);
-    if (hashtags.length > 0) {
-      for (let hashtag of hashtags){
-        await hashtagsRepository.addHashtag(hashtag, postId);
+    if (description) {
+      const hashtags = convertHashtags(description);
+      if (hashtags.length > 0) {
+        for (let hashtag of hashtags){
+          await hashtagsRepository.addHashtag(hashtag, postId);
+        }
       }
     }
     res.sendStatus(201);
