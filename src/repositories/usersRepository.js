@@ -17,7 +17,7 @@ async function checkSignUp(email, username) {
 
 async function getUsersByQuery(query) {
   return db.query(`
-    SELECT us.username
+    SELECT us.username, us.id
     FROM users us
     WHERE us.username
     ILIKE $1
@@ -41,12 +41,22 @@ async function getUserPictureByUserId(userId) {
     `, [userId]);
 }
 
+async function getFollowersByUserId(userId) {
+    return db.query(`
+    SELECT f."followerId"
+    FROM followers f
+    WHERE f."followedId" = $1
+    GROUP BY f."followerId"
+    `, [userId]);
+}
+
 const usersRepository = {
   getUserInfoById,
   checkSignUp,
   insertUser,
   getUserPictureByUserId,
   getUsersByQuery,
+  getFollowersByUserId,
 };
 
 export default usersRepository;

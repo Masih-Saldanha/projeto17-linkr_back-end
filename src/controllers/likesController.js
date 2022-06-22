@@ -34,7 +34,7 @@ export async function getUsersWhoLiked(req, res) {
 
     res.status(200).send({
       likes: likeSearch.rows,
-      userLiked: checkIfUserLiked,
+      userLiked: checkIfUserLiked !== undefined,
     });
   } catch (e) {
     res.status(500).send(e);
