@@ -12,9 +12,13 @@ export async function publishPost(req, res) {
   const { description, link } = req.body;
   const { user } = res.locals;
   const userId = user.id;
+  // console.log("link: ", link);
+  // console.log("description: ", description);
+  // console.log("userId: ", userId);
   try {
     const newPost = await postRepository.createPost(description, link, userId);
     const postId = newPost.rows[0].id;
+    // console.log("postId: ", postId);
     if (description) {
       const hashtags = convertHashtags(description);
       if (hashtags.length > 0) {
