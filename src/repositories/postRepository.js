@@ -45,7 +45,7 @@ async function getPostsList(page) {
             posts.link,
             posts.id
         ORDER BY posts.id DESC
-        LIMIT 20
+        LIMIT 10
         OFFSET $1;
     `, [page]);
 }
