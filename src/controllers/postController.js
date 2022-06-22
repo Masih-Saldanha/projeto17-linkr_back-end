@@ -35,13 +35,13 @@ export async function publishPost(req, res) {
 }
 
 export async function editPost(req, res) {
-  const postId = req.params.postId;
+  const { postId } = req.params;
   const postIdToInteger = parseInt(postId);
   // console.log(postIdToInteger);
 
   // console.log(req.body.description);
 
-  const user = res.locals.user;
+  const { user } = res.locals;
   // console.log(user);
   try {
     const dados = await postRepository.editPostByPostId(req.body.description, postIdToInteger, user.id);
@@ -54,13 +54,13 @@ export async function editPost(req, res) {
 }
 
 export async function deletePost(req, res) {
-  const postId = req.params.postId;
+  const { postId } = req.params;
   const postIdToInteger = parseInt(postId);
   // console.log(postIdToInteger);
 
   // console.log(req.body.description);
 
-  const user = res.locals.user;
+  const { user } = res.locals;
   // console.log(user);
   try {
     await postRepository.deleteLikesByPostId(postIdToInteger);
@@ -75,7 +75,7 @@ export async function deletePost(req, res) {
 }
 
 export async function getPosts(req, res) {
-  const formatedPostsList = res.locals.formatedPostsList;
+  const { formatedPostsList } = res.locals;
   try {
     // FIXME: PODE-SE TENTAR LÓGICA DE PAGINAÇÃO AQUI DEPOIS.
     res.status(200).send(formatedPostsList);

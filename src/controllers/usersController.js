@@ -13,9 +13,15 @@ export async function getUserInfos(req, res) {
 
     if (userSearch.rowCount === 0) return res.status(404).send('Usuário inexistente');
 
+    const followersSearch = await usersRepository.getFollowersByUserId(id);
+    const checkIfUserIsFollowing = followersSearch.rows.find(
+      (follower) => follower.followerId === user.id,
+    );
+
     const objToSend = {
       ...userSearch.rows[0],
       posts: formatedPostsList,
+      followingAlready: checkIfUserIsFollowing !== undefined,
     };
 
     res.status(200).send(objToSend);

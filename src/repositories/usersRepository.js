@@ -44,11 +44,10 @@ async function getUserPictureByUserId(userId) {
 async function getFollowersByUserId(userId) {
     return db.query(`
     SELECT f."followerId"
-    FROM users u
-    JOIN followers f ON f."userId" = u.id
-    GROUP BY f."userId"
-    WHERE u.id = $1
-    `, [userId])
+    FROM followers f
+    WHERE f."followedId" = $1
+    GROUP BY f."followerId"
+    `, [userId]);
 }
 
 const usersRepository = {
