@@ -26,7 +26,26 @@ CREATE TABLE "likes" (
 );
 
 CREATE TABLE "hashtags" (
-	"id" serial NOT NULL PRIMARY KEY,
-	"hashtag" varchar(140) NOT NULL,
-	"postId" integer NOT NULL REFERENCES "posts"("id")
+	"id" SERIAL NOT NULL PRIMARY KEY,
+	"hashtag" VARCHAR(140) NOT NULL,
+	"postId" INTEGER NOT NULL REFERENCES "posts"("id")
+);
+
+CREATE TABLE "comments" (
+    "id" serial NOT NULL PRIMARY KEY,
+	"comment" VARCHAR(280) NOT NULL,
+	"postId" INTEGER NOT NULL REFERENCES "posts"("id"),
+    "userId" integer NOT NULL REFERENCES "users"("id")
+);
+
+CREATE TABLE "followers" (
+    "id" serial NOT NULL PRIMARY KEY,
+	"followerId" INTEGER NOT NULL REFERENCES "users"("id"),
+    "followedId" integer NOT NULL REFERENCES "users"("id")
+);
+
+CREATE TABLE "reposts" (
+	"id" SERIAL NOT NULL PRIMARY KEY,
+	"userId" INTEGER NOT NULL REFERENCES "users"("id"),
+	"postId" INTEGER NOT NULL REFERENCES "posts"("id")
 );
