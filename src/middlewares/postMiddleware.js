@@ -7,7 +7,7 @@ import likesRepository from '../repositories/likesRepository.js';
 export async function validateUrlMetadata(req, res, next) {
   try {
     const metadata = await urlMetadata(req.body.link);
-    console.log(metadata);
+    // console.log(metadata);
 
     next();
   } catch (error) {
@@ -17,10 +17,11 @@ export async function validateUrlMetadata(req, res, next) {
 }
 
 export async function urlMetadataFormater(req, res, next) {
+  const page = req.params.page;
   const { user } = res.locals;
   const { id } = req.params;
   try {
-    const { rows: postsList } = id ? await postRepository.getPostsByUserId(id) : await postRepository.getPostsList(0);
+    const { rows: postsList } = id ? await postRepository.getPostsByUserId(id) : await postRepository.getPostsList(page * 10);
     const formatedPostsList = [];
     for (let post of postsList) {
       const { link } = post;
