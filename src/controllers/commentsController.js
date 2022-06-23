@@ -6,8 +6,8 @@ import commentsRepository from '../repositories/commentsRepository.js';
 
 export async function getCommentsByPostId(req, res) {
   try {
-    const { postid } = req.params;
-    const { rows: comentarios } = await commentsRepository.getCommentsByPostId(postid);
+    const { postId } = req.params;
+    const { rows: comentarios } = await commentsRepository.getCommentsByPostId(postId);
     res.status(200).send(comentarios);
   } catch (e) {
     console.log('Erro ao buscar lista de comentários do post', e);
@@ -17,11 +17,22 @@ export async function getCommentsByPostId(req, res) {
 
 export async function addComment(req, res) {
   try {
-    const { userid, postid, comment } = req.body;
-    await commentsRepository.addComment(userid, postid, comment);
+    const { userId, postId, comment } = req.body;
+    await commentsRepository.addComment(userId, postId, comment);
     res.sendStatus(201);
   } catch (error) {
     console.log(error);
     res.status(500).send(error);
+  }
+}
+
+export async function getQtyCommentsByPostId(req, res) {
+  try {
+    const { postId } = req.params;
+    const { rows: quantidade } = await commentsRepository.getQtyCommentsByPostId(postId);
+    res.status(200).send(quantidade);
+  } catch (e) {
+    console.log('Erro ao buscar quantidade de comentários do post', e);
+    res.status(500).send(e);
   }
 }
