@@ -16,12 +16,30 @@ export async function validateUrlMetadata(req, res, next) {
   }
 }
 
+// export async function validateFollowerTimeline(req, res, next) {
+//   const { user } = res.locals;
+//   try {
+//     const followerList = await postRepository.searchFollowerId(user.id);
+//     if (followerList.rowCount === 0) return res.status(200).send("You don't follow anyone yet. Search for new friends!");
+//     next();
+//   } catch (error) {
+//     console.log(error);
+//     res.status(500).send(error);
+//   }
+// }
+
 export async function urlMetadataFormater(req, res, next) {
   const page = req.params.page;
   const { user } = res.locals;
   const { id } = req.params;
   try {
-    const { rows: postsList } = id ? await postRepository.getPostsByUserId(id) : await postRepository.getPostsList(page * 10);
+    if (!id) {
+      const followerList = await postRepository.searchFollowerId(user.id);
+      if (followerList.rowCount === 0) return res.status(200).send("You don't follow anyone yet. Search for new friends!");
+    }
+    const { rows: postsList } = id ? await postRepository.getPostsByUserId(id) : await postRepository.getPostsList(user.id, page * 10);
+    // console.log(postsList.length);
+    if (postsList.length === 0) return res.status(200).send("No posts found from your friends");
     const formatedPostsList = [];
     for (let post of postsList) {
       const { link } = post;
