@@ -23,31 +23,34 @@ async function searchPostById(id) {
   return db.query('SELECT * FROM posts WHERE id = $1', [id]);
 }
 
-async function getPostsList(page) {
+async function getPostsList(followerId, page) {
   return db.query(`
-        SELECT
-            users.username,
-            users.id as "userId",
-            users."pictureUrl" as "userPicture",
-            posts.description,
-            posts.link,
-            posts.id as "postId",
-            COUNT(likes."postId") as likes
-        FROM posts
-        JOIN users ON posts."userId" = users.id
-        LEFT JOIN likes ON posts.id = likes."postId"
-        GROUP BY 
-            users.username,
-            users.id,
-            users."pictureUrl",
-            users.id,
-            posts.description,
-            posts.link,
-            posts.id
-        ORDER BY posts.id DESC
-        LIMIT 10
-        OFFSET $1;
-    `, [page]);
+    SELECT 
+      ufollowed.username,
+      ufollowed.id as "userId",
+      ufollowed."pictureUrl" as "userPicture",
+      posts.description,
+      posts.link,
+      posts.id as "postId",
+      COUNT(likes."postId") as likes
+    FROM followers
+    JOIN users ufollower ON followers."followerId" = ufollower.id
+    JOIN users ufollowed ON followers."followedId" = ufollowed.id
+    JOIN posts ON posts."userId" = ufollowed.id
+    LEFT JOIN likes ON posts.id = likes."postId"
+    WHERE ufollower.id = $1
+    GROUP BY 
+      ufollowed.username,
+      ufollowed.id,
+      ufollowed."pictureUrl",
+      ufollowed.id,
+      posts.description,
+      posts.link,
+      posts.id
+    ORDER BY posts.id DESC
+    LIMIT 10
+    OFFSET $2;
+    `, [followerId, page]);
 }
 
 async function getPostsByHashtag(hashtag) {
@@ -111,6 +114,13 @@ async function deleteHashtagsByPostId(postId) {
   `, [postId]);
 }
 
+async function searchFollowerId(followerId) {
+  return db.query(`
+    SELECT * FROM followers
+    WHERE followers."followerId" = $1;
+  `, [followerId])
+}
+
 const postRepository = {
   createPost,
   searchPostById,
@@ -121,7 +131,8 @@ const postRepository = {
   searchPostId,
   deletePostById,
   deleteLikesByPostId,
-  deleteHashtagsByPostId
+  deleteHashtagsByPostId,
+  searchFollowerId
 };
 
 export default postRepository;
