@@ -10,14 +10,14 @@ async function addComment(userId, postId, comment) {
 async function getCommentsByPostId(postId) {
   console.log('get normal passou');
   return db.query(`
-    SELECT *  FROM comments WHERE postId = $1 
+    SELECT *  FROM comments WHERE "postId" = $1 
     ORDER BY id DESC `, [postId]);
 }
 
 async function getQtyCommentsByPostId(postId) {
   console.log('quantidade passou');
   return db.query(`
-    SELECT count(id) AS quantity FROM comments WHERE postId = $1 
+    SELECT count(id) AS quantity FROM comments WHERE "postId" = $1 
     ORDER BY id DESC `, [postId]);
 }
 
