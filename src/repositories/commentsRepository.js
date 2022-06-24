@@ -17,8 +17,7 @@ async function getCommentsByPostId(postId) {
 async function getQtyCommentsByPostId(postId) {
   console.log('quantidade passou');
   return db.query(`
-    SELECT count(id) AS quantity FROM comments WHERE "postId" = $1 
-    ORDER BY id DESC `, [postId]);
+    SELECT count(id) AS quantity FROM comments WHERE "postId" = $1`, [postId]);
 }
 
 const commentsRepository = {
