@@ -12,13 +12,9 @@ export async function publishPost(req, res) {
   const { description, link } = req.body;
   const { user } = res.locals;
   const userId = user.id;
-  // console.log("link: ", link);
-  // console.log("description: ", description);
-  // console.log("userId: ", userId);
   try {
     const newPost = await postRepository.createPost(description, link, userId);
     const postId = newPost.rows[0].id;
-    // console.log("postId: ", postId);
     if (description) {
       const hashtags = convertHashtags(description);
       if (hashtags.length > 0) {
@@ -37,12 +33,7 @@ export async function publishPost(req, res) {
 export async function editPost(req, res) {
   const { postId } = req.params;
   const postIdToInteger = parseInt(postId);
-  // console.log(postIdToInteger);
-
-  // console.log(req.body.description);
-
   const { user } = res.locals;
-  // console.log(user);
   try {
     const dados = await postRepository.editPostByPostId(req.body.description, postIdToInteger, user.id);
 
@@ -56,12 +47,7 @@ export async function editPost(req, res) {
 export async function deletePost(req, res) {
   const { postId } = req.params;
   const postIdToInteger = parseInt(postId);
-  // console.log(postIdToInteger);
-
-  // console.log(req.body.description);
-
   const { user } = res.locals;
-  // console.log(user);
   try {
     await postRepository.deleteLikesByPostId(postIdToInteger);
     await postRepository.deleteHashtagsByPostId(postIdToInteger);
@@ -77,8 +63,21 @@ export async function deletePost(req, res) {
 export async function getPosts(req, res) {
   const { formatedPostsList } = res.locals;
   try {
-    // FIXME: PODE-SE TENTAR LÓGICA DE PAGINAÇÃO AQUI DEPOIS.
     res.status(200).send(formatedPostsList);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error);
+  }
+}
+
+export async function insertRepost(req, res) {
+  const { user } = res.locals;
+  const userId = parseInt(user.id);
+  const postId = parseInt(req.body.postId);
+  try {
+    await postRepository.insertNewRepost(userId, postId);
+    
+    res.status(200).send("Repost done!");
   } catch (error) {
     console.log(error);
     res.status(500).send(error);

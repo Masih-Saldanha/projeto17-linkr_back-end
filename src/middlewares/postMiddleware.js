@@ -7,7 +7,6 @@ import likesRepository from '../repositories/likesRepository.js';
 export async function validateUrlMetadata(req, res, next) {
   try {
     const metadata = await urlMetadata(req.body.link);
-    // console.log(metadata);
 
     next();
   } catch (error) {
@@ -15,18 +14,6 @@ export async function validateUrlMetadata(req, res, next) {
     res.status(400).send('Esse link não é aceito, envie um link válido');
   }
 }
-
-// export async function validateFollowerTimeline(req, res, next) {
-//   const { user } = res.locals;
-//   try {
-//     const followerList = await postRepository.searchFollowerId(user.id);
-//     if (followerList.rowCount === 0) return res.status(200).send("You don't follow anyone yet. Search for new friends!");
-//     next();
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).send(error);
-//   }
-// }
 
 export async function urlMetadataFormater(req, res, next) {
   const page = req.params.page;
@@ -38,8 +25,7 @@ export async function urlMetadataFormater(req, res, next) {
       if (followerList.rowCount === 0) return res.status(200).send("You don't follow anyone yet. Search for new friends!");
     }
     const { rows: postsList } = id ? await postRepository.getPostsByUserId(id) : await postRepository.getPostsList(user.id, page * 10);
-    // console.log(postsList.length);
-    if (postsList.length === 0) return res.status(200).send("No posts found from your friends");
+    if (postsList.length === 0 && !id) return res.status(200).send("No posts found from your friends");
     const formatedPostsList = [];
     for (let post of postsList) {
       const { link } = post;
@@ -72,7 +58,6 @@ export async function validateEditPost(req, res, next) {
   try {
     const post = await postRepository.searchPostId(postIdToInteger, user.id);
     const postObject = post.rows[0];
-    // console.log(postObject);
     if (post.rowCount === 0) {
       return res.status(404).send(`Post not found, it doesn't exist or user is not the post creator.`)
     }

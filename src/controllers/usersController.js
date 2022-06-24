@@ -9,7 +9,7 @@ export async function getUserInfos(req, res) {
   const { user, formatedPostsList } = res.locals;
 
   try {
-    const userSearch = await usersRepository.getUserInfoById(id);
+    const userSearch = await usersRepository.getUserInfoById(parseInt(id));
 
     if (userSearch.rowCount === 0) return res.status(404).send('Usuário inexistente');
 
