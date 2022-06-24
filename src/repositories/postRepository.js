@@ -10,12 +10,23 @@ async function createPost(description, link, userId) {
 async function getPostsByUserId(userId) {
   // TODO: adicionar com os hashtags?
   return db.query(`
-  SELECT p.id as "postId", p.description, p.link, COUNT(l.*) as likes
-  FROM posts p
-  LEFT JOIN likes l ON l."postId" = p.id
-  WHERE p."userId" = $1
-  GROUP BY p.id
-  LIMIT 20
+    SELECT 
+      p.id as "postId", 
+      p.description, 
+      p.link, 
+      users.id as "userId",
+      COUNT(reposts."postId") as reposts, 
+      COUNT(l.*) as likes
+    FROM posts p
+    LEFT JOIN likes l ON l."postId" = p.id
+    LEFT JOIN reposts ON p.id = reposts."postId"
+    JOIN users ON p."userId" = users.id
+    WHERE p."userId" = $1
+    GROUP BY 
+      p.id,
+      users.id
+    ORDER BY p.id DESC
+    LIMIT 20
     `, [userId]);
 }
 
@@ -32,12 +43,14 @@ async function getPostsList(followerId, page) {
       posts.description,
       posts.link,
       posts.id as "postId",
+      COUNT(reposts."postId") as reposts,
       COUNT(likes."postId") as likes
     FROM followers
     JOIN users ufollower ON followers."followerId" = ufollower.id
     JOIN users ufollowed ON followers."followedId" = ufollowed.id
     JOIN posts ON posts."userId" = ufollowed.id
     LEFT JOIN likes ON posts.id = likes."postId"
+    LEFT JOIN reposts ON posts.id = reposts."postId"
     WHERE ufollower.id = $1
     GROUP BY 
       ufollowed.username,
@@ -121,6 +134,13 @@ async function searchFollowerId(followerId) {
   `, [followerId])
 }
 
+async function insertNewRepost(userId, postId) {
+  return db.query(`
+    INSERT INTO reposts("userId", "postId")
+    VALUES($1, $2);
+  `, [userId, postId]);
+}
+
 const postRepository = {
   createPost,
   searchPostById,
@@ -132,7 +152,8 @@ const postRepository = {
   deletePostById,
   deleteLikesByPostId,
   deleteHashtagsByPostId,
-  searchFollowerId
+  searchFollowerId,
+  insertNewRepost
 };
 
 export default postRepository;
