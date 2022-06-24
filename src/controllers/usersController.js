@@ -46,8 +46,32 @@ export async function getUsersByQuery(req, res) {
   const { user } = res.locals;
   const { query } = req.params;
 
+  //   function orderUsers(users) {
+  //     const searchOrdered = users.sort((a, b) => {
+  //       if (b.userFollows === true) return -1;
+  //       if (a.userFollows === true) return 1;
+  //       return 0;
+  //     });
+
+  //     return searchOrdered;
+  //   }
+
+  //   function addFollowedTest(search, followedUsers) {
+  //     const usernames = followedUsers.rows.map((followed) => followed.username);
+  //     return search.rows.map((result) => (
+  //       {
+  //         ...result,
+  //         userFollows: Object.values(usernames).find(result.username) !== undefined,
+  //       }
+  //     ));
+  //   }
+
   try {
     const search = await usersRepository.getUsersByQuery(query);
+    // const followedUsers = await usersRepository.getFollowersByUserIdWithUsername(user.id);
+
+    // const usersWithFollowedUsersTest = addFollowedTest(search, followedUsers);
+    // const orderedArr = orderUsers(usersWithFollowedUsersTest);
 
     res.status(200).send(search.rows);
   } catch (e) {
