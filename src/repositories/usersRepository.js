@@ -41,14 +41,34 @@ async function getUserPictureByUserId(userId) {
     `, [userId]);
 }
 
+async function getFollowedsByUserId(userId) {
+  return db.query(`
+    SELECT f."followedId", u.username
+    FROM followers f
+    JOIN users u ON f."followedId" = u.id
+    WHERE f."followerId" = $1
+    GROUP BY f."followedId", u.username
+    `, [userId]);
+}
+
 async function getFollowersByUserId(userId) {
-    return db.query(`
+  return db.query(`
     SELECT f."followerId"
     FROM followers f
     WHERE f."followedId" = $1
     GROUP BY f."followerId"
     `, [userId]);
 }
+
+async function getFollowersByUserIdWithUsername(userId) {
+    return db.query(`
+      SELECT f."followerId", u.username
+      FROM followers f
+      JOIN users u ON f."followerId" = u.id
+      WHERE f."followedId" = $1
+      GROUP BY f."followerId", u.username
+      `, [userId]);
+  }
 
 const usersRepository = {
   getUserInfoById,
@@ -57,6 +77,8 @@ const usersRepository = {
   getUserPictureByUserId,
   getUsersByQuery,
   getFollowersByUserId,
+  getFollowedsByUserId,
+  getFollowersByUserIdWithUsername,
 };
 
 export default usersRepository;
